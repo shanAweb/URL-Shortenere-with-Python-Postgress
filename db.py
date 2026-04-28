@@ -1,19 +1,26 @@
-# import psycopg2-binary
+import psycopg2
 import os
 from dotenv import load_dotenv
 
-# Loading .env varaiables for DB credientiels
-DB_HOST = "DB_HOST"
-DB_PORT = "DB_PORT"
-DB_NAME = "DB_NAME"
-DB_USER = "DB_USER"
-DB_PASSWORD = "DB_PASSWORD"
-
 load_dotenv()
-print (os.getenv(DB_HOST, "DB host was not provided"))
-print (os.getenv(DB_NAME, "DB Name was not provided"))
-print (os.getenv(DB_PORT, "DB port was not provided"))
-print (os.getenv(DB_USER, "DB user was not provided"))
-print (os.getenv(DB_PASSWORD, "DB password was not required"))
-# print(os.getenv(""))
+def get_connection():
+    """ This function builds the connection with DB"""
+
+    host = os.getenv("DB_HOST", "DB host was not provided")
+    dbname = os.getenv("DB_NAME", "DB Name was not provided")
+    port = os.getenv("DB_PORT", "DB port was not provided")
+    user = os.getenv("DB_USER", "DB user was not provided")
+    password = os.getenv("DB_PASSWORD", "DB password was not required")
+    connection = psycopg2.connect(
+        host = host,
+        dbname = dbname,
+        port = port,
+        user = user,
+        password = password
+    )
+    return connection
+
+print (get_connection() )
+
+
 
