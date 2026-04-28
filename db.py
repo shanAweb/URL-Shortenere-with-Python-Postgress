@@ -3,8 +3,9 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 def get_connection():
-    """ This function builds the connection with DB"""
+    """This function builds the connection with DB"""
 
     host = os.getenv("DB_HOST", "DB host was not provided")
     dbname = os.getenv("DB_NAME", "DB Name was not provided")
@@ -20,7 +21,19 @@ def get_connection():
     )
     return connection
 
-print (get_connection() )
+def save_url (original_url, short_code):
+    """This function saves URL data into the DB"""
+    
+    db_connection = get_connection()
+    cursor = db_connection.cursor()
+    cursor.execute("INSERT INTO urls(original_url, short_code) VALUES (%s, %s)", (original_url, short_code))
+    db_connection.commit()
+    cursor.close()
+    db_connection.close()
+
+if __name__ == "__main__":
+    save_url("https://www.psycopg.org/docs/index.html", "ab123")
+    print("URL saved successfully!")
 
 
 
