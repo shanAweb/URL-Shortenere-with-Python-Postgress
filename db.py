@@ -38,8 +38,12 @@ def get_original_url(short_code):
     # Reason for this , (short_code,) is that Python could treat it as tuple; because that is what psycopg2 expects
     cursor.execute("SELECT original_url FROM urls WHERE short_code=(%s)", (short_code,))
     result = cursor.fetchone()
-    url_result = result[0]
-    return url_result
+    if result:
+        url_result = result[0]
+        return url_result
+    else:
+        return None
+
 
 if __name__ == "__main__":
     save_url("https://www.psycopg.org/docs/index.html", "ab123")
